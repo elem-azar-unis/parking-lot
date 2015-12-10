@@ -2,7 +2,6 @@ package parkingLot;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -32,8 +31,7 @@ class WaitConnection implements Runnable
 				ObjectInputStream in=new ObjectInputStream(recv.getInputStream());
 				Message message=(Message)in.readObject();
 				assert message.type==Message.INIT;
-				table.add(new Node(message.value,new ObjectOutputStream(recv.getOutputStream())));
-				new Thread(new Communicator(recv, message.value)).start();
+				new Thread(new Communicator(recv, message.value,table)).start();
 			}
 		} catch (IOException | ClassNotFoundException e)
 		{

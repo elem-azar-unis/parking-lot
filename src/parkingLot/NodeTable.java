@@ -35,6 +35,10 @@ public class NodeTable
 			}
 		}
 	}
+	public int size()
+	{
+		return nodes.size();
+	}
 }
 
 /**

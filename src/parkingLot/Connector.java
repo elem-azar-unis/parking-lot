@@ -12,10 +12,8 @@ import parkingLot.NodeList.NodeAddr;
 public class Connector
 {
 	NodeList nodeList;
-	NodeTable nodeTable;
 	public Connector(NodeTable nodeTable)
 	{
-		this.nodeTable=nodeTable;
 		nodeList=new NodeList();
 		new Thread(new WaitConnection(nodeList.port, nodeTable)).start();
 		try
@@ -25,7 +23,7 @@ public class Connector
 				Socket socket=new Socket(addr.ip,addr.port);
 				ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
 				out.writeObject(new Message(Message.INIT,nodeList.self));
-				new Thread(new Communicator(socket, addr.id)).start();
+				new Thread(new Communicator(socket, addr.id,nodeTable)).start();
 			} 
 		}
 		catch (IOException e)
