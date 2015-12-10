@@ -1,29 +1,37 @@
 package parkingLot;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+import parkingLot.NodeList.NodeAddr;
+
 /**
- * 用于与所有其他的节点建立连接。具体的行为为：主动连接所有编号小于自己的节点，开新线程等待所有编号比自己大的节点。
+ * 用于与所有其他的节点建立连接。具体的行为为：主动连接所有编号小于自己的节点，同时发送给他自己的编号，开新线程等待所有编号比自己大的节点。
  * */
 public class Connector
 {
-
-}
-
-/**
- * 读取节点列表文件，获得所有的节点的编号、IP地址、端口号。
- * 文件的结构为：第一行：自己的编号。其他行：编号（空格）IP（空格）端口号
- * */
-class NodeList
-{
-	class NodeAddr
+	NodeList nodeList;
+	NodeTable nodeTable;
+	public Connector(NodeTable nodeTable)
 	{
-		
+		this.nodeTable=nodeTable;
+		nodeList=new NodeList();
+		new Thread(new WaitConnection(nodeList.port, nodeTable)).start();
+		try
+		{
+			for(NodeAddr addr:nodeList.lst)
+			{
+				Socket socket=new Socket(addr.ip,addr.port);
+				ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
+				out.writeObject(new Message(Message.INIT,nodeList.self));
+				new Thread(new Communicator(socket, addr.id)).start();
+			} 
+		}
+		catch (IOException e)
+		{
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
 	}
-}
-
-/**
- * 一个节点，包括他的编号，与他相连的socket，进程
- * */
-class Node
-{
-	
 }
