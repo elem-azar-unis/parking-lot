@@ -12,11 +12,9 @@ import java.net.Socket;
 class WaitConnection implements Runnable
 {
 	int selfport;
-	NodeTable table;
-	public WaitConnection(int port,NodeTable table)
+	public WaitConnection(int port)
 	{
 		selfport=port;
-		this.table=table;
 	}
 	@Override
 	public void run()
@@ -31,7 +29,7 @@ class WaitConnection implements Runnable
 				ObjectInputStream in=new ObjectInputStream(recv.getInputStream());
 				Message message=(Message)in.readObject();
 				assert message.type==Message.INIT;
-				new Thread(new Communicator(recv, message.value,table)).start();
+				new Thread(new Communicator(recv, message.value)).start();
 			}
 		} catch (IOException | ClassNotFoundException e)
 		{

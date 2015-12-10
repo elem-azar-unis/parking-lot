@@ -14,7 +14,7 @@ public class Message implements Serializable
 	public static final short REPLY=1; 
 	public static final short RELEASE=2; 
 	public static final short ALTER=3; 
-	public static final short INIT=3; 
+	public static final short INIT=4; 
 	/** 消息类型*/
 	public int type=-1;
 	/** 消息携带的数值信息：时间信息、空闲停车位数目。*/
