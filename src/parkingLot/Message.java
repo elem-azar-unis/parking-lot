@@ -10,10 +10,15 @@ import java.io.Serializable;
 public class Message implements Serializable
 {
 	private static final long serialVersionUID = 1553985160840388148L;
+	/**请求*/
 	public static final short REQUEST=0; 
+	/**回复*/
 	public static final short REPLY=1; 
+	/**释放*/
 	public static final short RELEASE=2; 
+	/**更改空位数目*/
 	public static final short ALTER=3; 
+	/**初始时候发送自己的ID*/
 	public static final short INIT=4; 
 	/** 消息类型*/
 	public int type=-1;

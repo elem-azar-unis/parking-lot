@@ -11,18 +11,13 @@ import java.net.Socket;
  * */
 class WaitConnection implements Runnable
 {
-	int selfport;
-	public WaitConnection(int port)
-	{
-		selfport=port;
-	}
 	@Override
 	public void run()
 	{
 		try
 		{
 			@SuppressWarnings("resource")
-			ServerSocket server=new ServerSocket(selfport);
+			ServerSocket server=new ServerSocket(NodeList.port);
 			while(true)
 			{
 				Socket recv=server.accept();

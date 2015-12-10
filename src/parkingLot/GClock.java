@@ -1,6 +1,6 @@
 package parkingLot;
 
-/**全局时间，可以获得时间、更新时间、自增时间。静态类*/
+/**静态类。全局时间，可以获得时间、更新时间、自增时间。*/
 public class GClock
 {
 	private static Integer round=0;

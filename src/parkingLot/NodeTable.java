@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 所有节点的连接表，能够互斥的添加某个新连接的节点，广播某一个消息。
+ * 静态类。所有节点的连接表，能够互斥的添加某个新连接的节点，广播某一个消息。
  * 兼具维护请求列表，即需要所有人都reply。
  * */
 public class NodeTable
@@ -38,8 +38,8 @@ public class NodeTable
 				{
 					n.to.writeObject(m);
 				}
-			}
-			 catch (IOException e)
+			} 
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -49,6 +49,11 @@ public class NodeTable
 	public static void broadcast_release()
 	{
 		Message m=new Message(Message.RELEASE,0);
+		broadcast(m);
+	}
+	/**向所有节点广播某一个消息m*/
+	public static void broadcast(Message m)
+	{
 		synchronized (nodes)
 		{
 			try
@@ -57,8 +62,8 @@ public class NodeTable
 				{
 					n.to.writeObject(m);
 				}
-			}
-			 catch (IOException e)
+			} 
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
