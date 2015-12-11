@@ -43,7 +43,6 @@ public class NodeList
 			fin.close();
 		} catch (IOException e)
 		{
-			// TODO 自动生成的 catch 块
 			System.out.println("读文件错误");
 			e.printStackTrace();
 		}

@@ -11,18 +11,28 @@ import java.net.Socket;
 public class Communicator implements Runnable
 {
 	Socket socket;
-	int node;
+	int peer_id;
 	ObjectInputStream in;
 	ObjectOutputStream out;
-	Node peer;
-	public Communicator(Socket s,int node) throws IOException
+	/**
+	 * 对面节点的{@link Node}数据结构的引用，此方法只能用{@link NodeTable#set_replyed(Node)}来操作。
+	 */
+	Node node;
+	public Communicator(Socket s,int peer_id)
 	{
 		socket=s;
-		this.node=node;
-		in=new ObjectInputStream(s.getInputStream());
-		out=new ObjectOutputStream(s.getOutputStream());
-		peer=new Node(node,out);
-		NodeTable.add(peer);
+		this.peer_id=peer_id;
+		try
+		{
+			in=new ObjectInputStream(s.getInputStream());
+			out=new ObjectOutputStream(s.getOutputStream());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}		
+		node=new Node(peer_id,out);
+		NodeTable.add(node);
 	}
 	@Override
 	public void run()
@@ -30,5 +40,4 @@ public class Communicator implements Runnable
 		// TODO 自动生成的方法存根
 		
 	}
-
 }

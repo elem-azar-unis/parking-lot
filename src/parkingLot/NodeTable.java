@@ -33,9 +33,6 @@ public class NodeTable
 				for(Node n:nodes)
 				{
 					n.replyed=false;
-				}
-				for(Node n:nodes)
-				{
 					n.to.writeObject(m);
 				}
 			} 
@@ -69,16 +66,36 @@ public class NodeTable
 			}
 		}
 	}
-	/**是否所有的节点都已经发送过reply*/
-	public static boolean all_replyed()
+	/**
+	 * 等待自己之前发送的请求已经收到了所有人的reply。
+	 */
+	public static void wait_all_reply()
 	{
 		synchronized (nodes)
 		{
-			for (Node node : nodes)
+			try
 			{
-				if(!node.replyed)return false;
+				while(nodes.stream().anyMatch(n -> !n.replyed))
+				{				
+					nodes.wait();
+				}				
 			}
-			return true;
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	/**
+	 * 将节点n记录为已经回复。此方法是同步的。
+	 * @param n 回复了的节点的{@link Node}数据结构的引用
+	 */
+	public static void set_replyed(Node n)
+	{
+		synchronized (nodes)
+		{
+			n.replyed=true;
+			nodes.notify();
 		}
 	}
 	public static int size()
