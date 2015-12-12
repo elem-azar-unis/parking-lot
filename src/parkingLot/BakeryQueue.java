@@ -44,7 +44,7 @@ public class BakeryQueue
 		{
 			try
 			{
-				while (queue.peek().id!=NodeList.self)
+				while (queue.peek().id!=FileInfo.self)
 				{				
 					queue.wait();
 				}

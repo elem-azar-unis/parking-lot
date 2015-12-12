@@ -12,6 +12,9 @@ public class GClock
 		{
 			int temp=round;
 			round=round+1;
+			//在界面上打印时间。
+			UI.jlbLogicClock.setText(String.valueOf(round));
+			UI.jlbLogicClock.repaint();
 			return temp;
 		}		
 	}
@@ -20,8 +23,10 @@ public class GClock
 	{
 		synchronized (round)
 		{
-			if(round<t)round=t;
-			round=round+1;
+			round=1+Math.max(round,t);
+			//在界面上打印时间。
+			UI.jlbLogicClock.setText(String.valueOf(round));
+			UI.jlbLogicClock.repaint();
 		}
 	}
 }

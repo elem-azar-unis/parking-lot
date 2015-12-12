@@ -24,7 +24,11 @@ public class Message implements Serializable
 	public int type=-1;
 	/** 消息携带的数值信息：时间信息、空闲停车位数目。*/
 	public int value=-1;
-	public Message(){}
+	/**
+	 * 创建一个新的消息。
+	 * @param type 消息的类型。从5种静态数字中选择。
+	 * @param value 消息携带的信息。有的消息不需要。
+	 */
 	public Message(int type,int value)
 	{
 		this.type=type;

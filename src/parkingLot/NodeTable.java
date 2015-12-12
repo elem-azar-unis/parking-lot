@@ -13,18 +13,23 @@ public class NodeTable
 {
 	private static List<Node> nodes=new ArrayList<Node>();
 	private NodeTable(){}
-	/**添加一个已经连接上的节点*/
+	/**添加一个已经连接上的节点，在界面上更新连接总数。*/
 	public static void add(Node n)
 	{
 		synchronized (nodes)
 		{
 			nodes.add(n);
+			System.out.println(n.id);
+			//在界面上更新连接总数
+			UI.jlbConnNum.setText(String.valueOf(nodes.size()));
+			UI.jlbConnNum.repaint();
 		}
 	}
-	/**向所有节点发送request，此时记录所有节点都没有返回reply*/
+	/**向所有节点发送request，将自己加入队列。此时记录所有节点都没有返回reply*/
 	public static void broadcast_request()
 	{
 		int t=GClock.get_round();
+		BakeryQueue.add(new Request(FileInfo.self,t));
 		Message m=new Message(Message.REQUEST,t);
 		synchronized (nodes)
 		{
@@ -42,9 +47,10 @@ public class NodeTable
 			}
 		}
 	}
-	/**向所有节点发送release*/
+	/**向所有节点发送release，将自己从队列中移除。*/
 	public static void broadcast_release()
 	{
+		BakeryQueue.remove(FileInfo.self);
 		Message m=new Message(Message.RELEASE,0);
 		broadcast(m);
 	}
@@ -97,10 +103,6 @@ public class NodeTable
 			n.replyed=true;
 			nodes.notify();
 		}
-	}
-	public static int size()
-	{
-		return nodes.size();
 	}
 }
 

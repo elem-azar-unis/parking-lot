@@ -2,6 +2,7 @@ package parkingLot;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,14 +18,14 @@ class WaitConnection implements Runnable
 		try
 		{
 			@SuppressWarnings("resource")
-			ServerSocket server=new ServerSocket(NodeList.port);
+			ServerSocket server=new ServerSocket(FileInfo.port);
 			while(true)
 			{
 				Socket recv=server.accept();
 				ObjectInputStream in=new ObjectInputStream(recv.getInputStream());
 				Message message=(Message)in.readObject();
 				assert message.type==Message.INIT;
-				new Thread(new Communicator(recv, message.value)).start();
+				new Thread(new Communicator(message.value, in, new ObjectOutputStream(recv.getOutputStream()))).start();
 			}
 		} catch (IOException | ClassNotFoundException e)
 		{
